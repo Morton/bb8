@@ -4,6 +4,26 @@ import useStream from './useStream';
 import adapterStateStream from './adapterStateStream';
 import deviceStream from './deviceStream';
 import selectedDeviceStream from './selectedDeviceStream';
+import characteristicsStream from './characteristicsStream';
+import xs from 'xstream';
+
+const wakeUpStream = characteristicsStream.filter(
+  ({uuid}) => uuid === '22bb746f-2bbf-7554-2d6f-726568705327',
+);
+const antiDosStream = characteristicsStream.filter(
+  ({uuid}) => uuid === '22bb746f-2bbd-7554-2d6f-726568705327',
+);
+const txPowerStream = characteristicsStream.filter(
+  ({uuid}) => uuid === '22bb746f-2bb2-7554-2d6f-726568705327',
+);
+
+xs.combine(wakeUpStream, antiDosStream, txPowerStream).addListener({
+  next: async ([wakeUpStream, antiDosStream, txPowerStream]) => {
+    await antiDosStream.writeWithResponse('MDExaTM=');
+    await txPowerStream.writeWithResponse('AAc=');
+    await wakeUpStream.writeWithResponse('AQ==');
+  },
+});
 
 const App = () => {
   const adapterState = useStream(adapterStateStream, '');
