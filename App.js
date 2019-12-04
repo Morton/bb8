@@ -3,6 +3,7 @@ import {View, Text, FlatList, Button, StyleSheet} from 'react-native';
 import useStream from './useStream';
 import adapterStateStream from './adapterStateStream';
 import deviceStream from './deviceStream';
+import selectedDeviceStream from './selectedDeviceStream';
 
 const App = () => {
   const adapterState = useStream(adapterStateStream, '');
@@ -13,7 +14,12 @@ const App = () => {
       <Text>Adapter State: {adapterState}</Text>
       <FlatList
         data={Object.values(devices).slice(0, 3)}
-        renderItem={({item}) => <Button title={item.name || item.id} />}
+        renderItem={({item}) => (
+          <Button
+            title={item.name || item.id}
+            onPress={() => selectedDeviceStream.shamefullySendNext(item)}
+          />
+        )}
         keyExtractor={device => device.id}
       />
       <Button title="↑" />
