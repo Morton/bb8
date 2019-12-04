@@ -15,6 +15,9 @@ import characteristicsStream from './characteristicsStream';
 import xs from 'xstream';
 import buttonStream from './buttonStream';
 import commandStream from './commandStream';
+import collisionStream from './collisionStream';
+import {configureCollisions} from './spheroCommands';
+import {encodeFromUint8Array} from './base64';
 
 const wakeUpStream = characteristicsStream.filter(
   ({uuid}) => uuid === '22bb746f-2bbf-7554-2d6f-726568705327',
@@ -29,22 +32,37 @@ const sendStream = characteristicsStream.filter(
   ({uuid}) => uuid === '22bb746f-2ba1-7554-2d6f-726568705327',
 );
 
-xs.combine(wakeUpStream, antiDosStream, txPowerStream).addListener({
-  next: async ([wakeUpStream, antiDosStream, txPowerStream]) => {
-    await antiDosStream.writeWithResponse('MDExaTM=');
-    await txPowerStream.writeWithResponse('AAc=');
-    await wakeUpStream.writeWithResponse('AQ==');
+xs.combine(wakeUpStream, antiDosStream, txPowerStream, sendStream).addListener({
+  next: async ([wakeUp, antiDos, txPower, send]) => {
+    await antiDos.writeWithResponse('MDExaTM=');
+    await txPower.writeWithResponse('AAc=');
+    await wakeUp.writeWithResponse('AQ==');
+
+    const command = configureCollisions({
+      meth: 0x01,
+      xt: 0x20,
+      xs: 0x20,
+      yt: 0x20,
+      ys: 0x20,
+      dead: 0x21,
+    });
+    await send
+      .writeWithResponse(encodeFromUint8Array(command))
+      .catch(console.error);
   },
 });
 
 xs.combine(sendStream, commandStream).addListener({
   next: ([send, command]) =>
-    send.writeWithResponse(command).then(console.log, console.error),
+    send.writeWithResponse(command).catch(console.error),
 });
+
+collisionStream.addListener({next: console.log, error: console.error});
 
 const App = () => {
   const adapterState = useStream(adapterStateStream, '');
   const devices = useStream(deviceStream, {});
+  const collisions = useStream(collisionStream, false);
 
   return (
     <View>
@@ -79,7 +97,7 @@ const App = () => {
         onPressOut={() => buttonStream.shamefullySendNext('STOP')}>
         <Text style={styles.button}>↓</Text>
       </TouchableWithoutFeedback>
-      <Text style={styles.collision}>💥</Text>
+      {collisions && <Text style={styles.collision}>💥</Text>}
     </View>
   );
 };

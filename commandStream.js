@@ -10,9 +10,9 @@ export default buttonStream
       case 'UP':
         return [80, 0];
       case 'RIGHT':
-        return [80, 180];
-      case 'DOWN':
         return [80, 270];
+      case 'DOWN':
+        return [80, 180];
       case 'STOP':
         return [0, 0];
     }
