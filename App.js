@@ -1,8 +1,11 @@
 import React from 'react';
 import {View, Text, FlatList, Button, StyleSheet} from 'react-native';
+import useStream from './useStream';
+import adapterStateStream from './adapterStateStream';
 
 const App = () => {
-  const [adapterState, devices] = ['', {}];
+  const adapterState = useStream(adapterStateStream, '');
+  const devices = {};
 
   return (
     <View>

@@ -12,7 +12,8 @@
   "dependencies": {
     "react": "16.9.0",
     "react-native": "0.61.5",
-    "react-native-ble-plx": "^1.1.0"
+    "react-native-ble-plx": "^1.1.0",
+    "xstream-from-callback": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
