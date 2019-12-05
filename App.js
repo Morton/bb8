@@ -77,21 +77,24 @@ const App = () => {
         )}
         keyExtractor={device => device.id}
       />
+
       <TouchableWithoutFeedback
         onPressIn={() => buttonStream.shamefullySendNext('UP')}
         onPressOut={() => buttonStream.shamefullySendNext('STOP')}>
         <Text style={styles.button}>↑</Text>
       </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback
-        onPressIn={() => buttonStream.shamefullySendNext('LEFT')}
-        onPressOut={() => buttonStream.shamefullySendNext('STOP')}>
-        <Text style={styles.button}>←</Text>
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback
-        onPressIn={() => buttonStream.shamefullySendNext('RIGHT')}
-        onPressOut={() => buttonStream.shamefullySendNext('STOP')}>
-        <Text style={styles.button}>→</Text>
-      </TouchableWithoutFeedback>
+      <View style={styles.row}>
+        <TouchableWithoutFeedback
+          onPressIn={() => buttonStream.shamefullySendNext('LEFT')}
+          onPressOut={() => buttonStream.shamefullySendNext('STOP')}>
+          <Text style={styles.buttonHalf}>←</Text>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPressIn={() => buttonStream.shamefullySendNext('RIGHT')}
+          onPressOut={() => buttonStream.shamefullySendNext('STOP')}>
+          <Text style={styles.buttonHalf}>→</Text>
+        </TouchableWithoutFeedback>
+      </View>
       <TouchableWithoutFeedback
         onPressIn={() => buttonStream.shamefullySendNext('DOWN')}
         onPressOut={() => buttonStream.shamefullySendNext('STOP')}>
@@ -109,6 +112,16 @@ const styles = StyleSheet.create({
   },
   button: {
     fontSize: 70,
+    width: '100%',
+    textAlign: 'center',
+  },
+  buttonHalf: {
+    fontSize: 70,
+    width: '50%',
+    textAlign: 'center',
+  },
+  row: {
+    flexDirection: 'row',
   },
 });
 
