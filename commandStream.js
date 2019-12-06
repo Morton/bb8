@@ -6,11 +6,11 @@ export default buttonStream
   .map(str => {
     switch (str) {
       case 'LEFT':
-        return [80, 90];
+        return [80, 270];
       case 'UP':
         return [80, 0];
       case 'RIGHT':
-        return [80, 270];
+        return [80, 90];
       case 'DOWN':
         return [80, 180];
       case 'STOP':
