@@ -13,7 +13,7 @@
     "abab": "latest",
     "buffer": "^5.4.3",
     "react": "16.9.0",
-    "react-native": "0.61.5",
+    "react-native": "0.62.3",
     "react-native-ble-plx": "^1.1.0",
     "xstream": "^11.11.0",
     "xstream-from-callback": "^1.0.0"
